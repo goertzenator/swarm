@@ -35,19 +35,11 @@
 
 connect(Host, Port, Opts, Timeout) ->
     gen_tcp:connect(Host, Port,
-                    Opts ++ [binary, {active, false}, {packet, raw}], Timeout).
+                    Opts, Timeout).
 
 listen(Opts) ->
     {port, Port} = lists:keyfind(port, 1, Opts),         % ensure exists
-    Backlog = proplists:get_value(backlog, Opts, 1024),  % ensure reasonable
-    ListenOpts = Opts ++ [binary, 
-                          {active, false},
-                          {backlog, Backlog}, 
-                          {packet, raw}, 
-                          {recbuf, 8192},
-                          {reuseaddr, true}],
-
-    gen_tcp:listen(Port, ListenOpts).
+    gen_tcp:listen(Port, Opts).
 
 accept(LSocket) ->
     gen_tcp:accept(LSocket).

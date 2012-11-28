@@ -35,22 +35,13 @@
 
 connect(Host, Port, Opts, Timeout) ->
     ssl:connect(Host, Port,
-		Opts ++ [binary, {active, false}, {packet, raw}], Timeout).
+		Opts, Timeout).
 
 listen(Opts) ->
     {port, Port} = lists:keyfind(port, 1, Opts),         % ensure exists
-    Backlog = proplists:get_value(backlog, Opts, 1024),  % ensure reasonable
     {certfile, _} = lists:keyfind(certfile, 1, Opts),    % ensure exists
     {keyfile, _} = lists:keyfind(keyfile, 1, Opts),      % ensure exists
-
-    ListenOpts = Opts ++ [binary, 
-                          {active, false},
-                          {backlog, Backlog}, 
-                          {packet, raw}, 
-                          {recbuf, 8192},
-                          {reuseaddr, true}],
-
-    ssl:listen(Port, ListenOpts).
+    ssl:listen(Port, Opts).
 
 accept(LSocket) ->
     accept(LSocket, infinity).
