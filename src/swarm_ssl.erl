@@ -40,7 +40,6 @@ connect(Host, Port, Opts, Timeout) ->
 listen(Opts) ->
     {port, Port} = lists:keyfind(port, 1, Opts),         % ensure exists
     {certfile, _} = lists:keyfind(certfile, 1, Opts),    % ensure exists
-    {keyfile, _} = lists:keyfind(keyfile, 1, Opts),      % ensure exists
     ssl:listen(Port, Opts).
 
 accept(LSocket) ->
